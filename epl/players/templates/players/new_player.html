@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-3 mb-3">
+    <h2>{{ title }}</h2>
+    <hr>
+
+    <form method="post">
+
+      <!-- Player Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Player Name</label>
+        <input name="name" type="text" class="form-control" id="name" required>
+      </div>
+
+      <!-- Position -->
+      <div class="mb-3">
+        <label for="position" class="form-label">Select Position</label>
+        <select name="position" id="position" class="form-select">
+          <option value="Goalkeeper">Goalkeeper</option>
+          <option value="Defender">Defender</option>
+          <option value="Midfielder">Midfielder</option>
+          <option value="Forward">Forward</option>
+        </select>
+      </div>
+
+      <!-- Nationality -->
+      <div class="mb-3">
+        <label for="nationality" class="form-label">Nationality</label>
+        <input name="nationality" type="text" class="form-control" id="nationality" required>
+      </div>
+
+      <!-- Goals -->
+      <div class="mb-3">
+        <label for="goals" class="form-label">Goals</label>
+        <input name="goals" type="number" class="form-control" id="goals" required>
+      </div>
+
+      <!-- Clean Sheets (Goalkeeper only) -->
+      <div class="mb-3" id="cleanSheetsField">
+        <label for="clean_sheets" class="form-label">Clean Sheets</label>
+        <input name="clean_sheets"
+               type="number"
+               class="form-control"
+               id="clean_sheets">
+        <small class="text-muted">
+          Only required for Goalkeeper
+        </small>
+      </div>
+
+      <!-- Squad Number -->
+      <div class="mb-3">
+        <label for="squad_no" class="form-label">Squad Number</label>
+        <input name="squad_no" type="number" class="form-control" id="squad_no" required>
+      </div>
+
+      <!-- Image -->
+      <div class="mb-3">
+        <label for="img" class="form-label">Image URL</label>
+        <input name="img" type="text" class="form-control" id="img" required>
+      </div>
+
+      <!-- Club -->
+      <div class="mb-3">
+        <label for="club_id" class="form-label">Select Club</label>
+        <select name="club_id" class="form-select">
+          {% for club in clubs %}
+            <option value="{{ club.id }}">{{ club.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-outline-success">
+        <i class="bi bi-folder-plus"></i>
+        New Player
+      </button>
+
+    </form>
+  </div>
+
+  <!-- Script for toggling Clean Sheets -->
+  <script>
+    const positionSelect = document.getElementById("position");
+    const cleanField = document.getElementById("cleanSheetsField");
+    const cleanInput = document.getElementById("clean_sheets");
+
+    function toggleCleanSheets() {
+      if (positionSelect.value === "Goalkeeper") {
+        cleanField.style.display = "block";
+      } else {
+        cleanField.style.display = "none";
+        cleanInput.value = "";
+      }
+    }
+
+    toggleCleanSheets();
+    positionSelect.addEventListener("change", toggleCleanSheets);
+  </script>
+
+{% endblock %}
